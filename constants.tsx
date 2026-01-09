@@ -10,7 +10,7 @@ export const NAV_ITEMS: NavItem[] = [
 export const CONTACT_EMAIL = "bedjiyeh@gmail.com";
 
 // Immagine segnaposto per l'eroe (Hero) - Sostituisci con /hero_bedjiyeh.jpg quando caricata
-export const HERO_IMAGE_URL = "https://images.unsplash.com/photo-1514525253361-b83f85df0f5c?q=80&w=2000&auto=format&fit=crop";
+export const HERO_IMAGE_URL = "https://i.postimg.cc/65q7kwXN/BG.jpg";
 
 export const RELEASES: Release[] = [
   {
