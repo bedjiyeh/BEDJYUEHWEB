@@ -24,7 +24,7 @@ export const RELEASES: Release[] = [
 ];
 
 export const GALLERY_IMAGES = [
-  "/images/gallery1.jpg",
+  "https://i.postimg.cc/G2tzBVDC/gallery1.jpg",
   "/images/gallery2.png",
   "/images/gallery3.png",
   "/images/gallery4.png"
