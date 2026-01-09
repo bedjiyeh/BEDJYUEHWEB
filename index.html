@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BEDJYUEH – Official Site</title>
+  <meta name="description" content="Official website of Bedjyueh. Acoustic rock, industrial atmospheres, and synthetic connections.">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=Roboto+Mono:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #2563eb;
+      --bg-dark: #05070a;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: #cbd5e1;
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      overflow-x: hidden;
+    }
+
+    .mono { font-family: 'Roboto Mono', monospace; }
+
+    /* Effetto Grana */
+    .grain {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 99;
+      opacity: 0.05;
+      background-image: url("https://www.transparenttextures.com/patterns/stardust.png");
+    }
+
+    /* Ken Burns Effect per la galleria */
+    @keyframes ken-burns {
+      0% { transform: scale(1) translate(0, 0); }
+      25% { transform: scale(1.1) translate(-2%, 1%); }
+      50% { transform: scale(1.05) translate(1%, -2%); }
+      75% { transform: scale(1.15) translate(-1%, -1%); }
+      100% { transform: scale(1) translate(0, 0); }
+    }
+    .animate-ken-burns {
+      animation: ken-burns 30s infinite ease-in-out;
+    }
+
+    /* GLITCH EFFECT DEFINITIVO */
+    .glitch {
+      position: relative;
+      display: inline-block;
+      color: white;
+    }
+    
+    .glitch::before, .glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: var(--bg-dark);
+    }
+
+    .glitch::before {
+      left: 2px;
+      text-shadow: -2px 0 #ff00c1;
+      clip-path: inset(45% 0 10% 0);
+      animation: glitch-anim 2s infinite linear alternate-reverse;
+    }
+
+    .glitch::after {
+      left: -2px;
+      text-shadow: 2px 0 #00fff9;
+      clip-path: inset(10% 0 45% 0);
+      animation: glitch-anim-2 3s infinite linear alternate-reverse;
+    }
+
+    @keyframes glitch-anim {
+      0% { clip-path: inset(80% 0 1% 0); transform: translate(-2px, 2px); }
+      50% { clip-path: inset(10% 0 60% 0); transform: translate(2px, -2px); }
+      100% { clip-path: inset(40% 0 40% 0); transform: translate(-2px, 2px); }
+    }
+
+    @keyframes glitch-anim-2 {
+      0% { clip-path: inset(10% 0 80% 0); transform: translate(2px, -2px); }
+      50% { clip-path: inset(50% 0 20% 0); transform: translate(-2px, 2px); }
+      100% { clip-path: inset(30% 0 40% 0); transform: translate(2px, -2px); }
+    }
+
+    .scanlines::before {
+      content: " ";
+      display: block;
+      position: absolute;
+      top: 0; left: 0; bottom: 0; right: 0;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%);
+      z-index: 2;
+      background-size: 100% 4px;
+      pointer-events: none;
+    }
+  </style>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.2.3",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "vite": "https://esm.sh/vite@^7.3.1",
+    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.2",
+    "@google/genai": "https://esm.sh/@google/genai@^1.35.0"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+<body>
+  <div class="grain"></div>
+  <div id="root"></div>
+  <script type="module" src="./index.tsx"></script>
+<script type="module" src="/index.tsx"></script>
+</body>
+</html>
