@@ -17,45 +17,22 @@ export const YOUTUBE_VIDEO_ID = "mgwMs4ydUQA";
 export const HERO_IMAGE_URL = "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?q=80&w=2000&auto=format&fit=crop";
 
 export const RELEASES: Release[] = [
-  {
+    {
     title: "CHEMICAL VOID",
     type: "Album",
     year: "2025",
-    coverUrl: "https://images.unsplash.com/photo-1571330735066-03aaa9429d89?q=80&w=1000&auto=format&fit=crop", 
+    // Immagine segnaposto per l'album - Sostituisci con /chemical_void.jpg quando caricata
+    coverUrl:"https://i.postimg.cc/gJLSS12N/chemical_void.png", 
     link: "https://open.spotify.com/intl-it/album/7novTY7aSCMCE149bBDaV8?si=DczS9r8ASViwM8F9dzy4qA"
-  }
-];
-
-// Added RITUALS constant to resolve compilation error in components/Rituals.tsx
-export const RITUALS: Ritual[] = [
-  {
-    date: "12.04.2025",
-    location: "BERLIN",
-    venue: "TRESOR",
-    coords: "52.5113 N / 13.4164 E",
-    status: "AVAILABLE"
-  },
-  {
-    date: "22.05.2025",
-    location: "MILAN",
-    venue: "MACAO",
-    coords: "45.4642 N / 9.1900 E",
-    status: "SOLD_OUT"
-  },
-  {
-    date: "15.06.2025",
-    location: "LONDON",
-    venue: "PRINTWORKS",
-    coords: "51.4975 N / 0.0436 W",
-    status: "AVAILABLE"
   }
 ];
 
 export const GALLERY_IMAGES = [
   "https://i.postimg.cc/G2tzBVDC/gallery1.jpg",
-  "https://images.unsplash.com/photo-1526218626217-dc65a29bb444?q=80&w=1000&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1514525253361-b83f85df0f5c?q=80&w=1000&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1598387181032-a3103a2db5b3?q=80&w=1000&auto=format&fit=crop"
+  "https://i.postimg.cc/7hvBpXCZ/gallery2.png",
+  "https://i.postimg.cc/qR6bbWv6/gallery3.jpg",
+  "https://i.postimg.cc/3R0SSzxj/gallery4.png"
+
 ];
 
 export const MANIFESTO_DATA: ManifestItem[] = [
