@@ -18,16 +18,16 @@ export const RELEASES: Release[] = [
     type: "Album",
     year: "2025",
     // Immagine segnaposto per l'album - Sostituisci con /chemical_void.jpg quando caricata
-    coverUrl:"/images/chemical_void.jpg", 
+    coverUrl:"https://i.postimg.cc/gJLSS12N/chemical_void.png", 
     link: "https://open.spotify.com/intl-it/album/7novTY7aSCMCE149bBDaV8?si=DczS9r8ASViwM8F9dzy4qA"
   }
 ];
 
 export const GALLERY_IMAGES = [
   "https://i.postimg.cc/G2tzBVDC/gallery1.jpg",
-  "/images/gallery2.png",
-  "/images/gallery3.png",
-  "/images/gallery4.png"
+  "https://i.postimg.cc/7hvBpXCZ/gallery2.png",
+  "https://i.postimg.cc/qR6bbWv6/gallery3.jpg",
+  "https://i.postimg.cc/3R0SSzxj/gallery4.png"
 ];
 
 export const MANIFESTO_DATA: ManifestItem[] = [
