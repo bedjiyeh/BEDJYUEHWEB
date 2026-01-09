@@ -26,7 +26,6 @@ const Terminal: React.FC = () => {
     setInput('');
     setHistory(prev => [...prev, {role: 'user', text: cmd.toUpperCase()}]);
 
-    // Easter Egg Logic
     if (cmd === '/help') {
       setHistory(prev => [...prev, {role: 'system', text: 'COMMANDS: /VOID, /LYRICS, /GLITCH, /CLEAR, /HELP.'}]);
       return;
@@ -61,10 +60,9 @@ const Terminal: React.FC = () => {
       return;
     }
 
-    // AI Fallback
     setIsTyping(true);
     try {
-      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
       const response = await ai.models.generateContent({
         model: 'gemini-3-flash-preview',
         contents: cmd,
@@ -82,31 +80,30 @@ const Terminal: React.FC = () => {
   };
 
   return (
-    <div className={`scanlines relative bg-black/95 border-2 border-blue-900/60 rounded-sm overflow-hidden transition-all duration-500 backdrop-blur-xl ${glitchActive ? 'animate-pulse scale-[1.02] border-red-500 shadow-[0_0_50px_rgba(255,0,0,0.2)]' : 'shadow-[0_0_60px_rgba(37,99,235,0.15)]'}`}>
+    <div className={`scanlines relative bg-black/95 border-2 border-blue-900/60 rounded-sm overflow-hidden transition-all duration-500 backdrop-blur-xl ${glitchActive ? 'animate-pulse scale-[1.02] border-red-500 shadow-[0_0_50px_rgba(255,0,0,0.2)]' : 'shadow-[0_0_60px_rgba(37,99,235,0.2)]'}`}>
       
       {/* Interactive Top Bar */}
-      <div className="bg-[#0a0d14] px-8 py-4 border-b border-blue-900/40 flex justify-between items-center relative overflow-hidden">
-        {/* Animated Scan Bar */}
-        <div className="absolute inset-0 bg-blue-500/5 -translate-y-full animate-[scan_4s_linear_infinite]" />
+      <div className="bg-[#0a0d14] px-8 py-5 border-b border-blue-900/50 flex justify-between items-center relative overflow-hidden">
+        <div className="absolute inset-0 bg-blue-500/5 -translate-y-full animate-[scan_6s_linear_infinite]" />
         
         <div className="flex items-center gap-4 relative z-10">
-           <div className="flex gap-1.5">
-              <div className="w-2.5 h-2.5 bg-red-900/40 rounded-full border border-red-500/30" />
-              <div className="w-2.5 h-2.5 bg-yellow-900/40 rounded-full border border-yellow-500/30" />
-              <div className="w-2.5 h-2.5 bg-green-900/40 rounded-full border border-green-500/30 animate-pulse" />
+           <div className="flex gap-2">
+              <div className="w-3 h-3 bg-red-500/20 rounded-full border border-red-500/40" />
+              <div className="w-3 h-3 bg-yellow-500/20 rounded-full border border-yellow-500/40" />
+              <div className="w-3 h-3 bg-green-500/40 rounded-full border border-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)] animate-pulse" />
            </div>
-           <div className="h-4 w-px bg-white/10 mx-2" />
-           <span className="mono text-[11px] text-blue-400 font-black uppercase tracking-[0.4em] drop-shadow-[0_0_5px_rgba(37,99,235,0.5)]">
+           <div className="h-5 w-px bg-white/20 mx-2" />
+           <span className="mono text-[12px] text-blue-400 font-black uppercase tracking-[0.5em] drop-shadow-[0_0_8px_rgba(37,99,235,0.6)]">
              B-System_Secure_Link
            </span>
         </div>
         
-        <div className="flex items-center gap-6 relative z-10">
-          <div className="mono text-[9px] text-blue-900 font-bold hidden sm:block tracking-widest uppercase">
-            CPU_LOAD: 12% // TMP: 38°C
+        <div className="hidden sm:flex items-center gap-8 relative z-10">
+          <div className="mono text-[10px] text-blue-700 font-black tracking-widest uppercase">
+            LINK: <span className="text-blue-400">ENCRYPTED</span>
           </div>
-          <div className="w-4 h-4 border border-blue-900/60 rounded-sm flex items-center justify-center">
-            <div className="w-1.5 h-1.5 bg-blue-500/20" />
+          <div className="mono text-[10px] text-blue-700 font-black tracking-widest uppercase">
+            CPU: <span className="text-blue-400">OK</span>
           </div>
         </div>
       </div>
@@ -114,46 +111,50 @@ const Terminal: React.FC = () => {
       {/* Terminal Main Content */}
       <div 
         ref={scrollRef} 
-        className="h-[450px] p-10 overflow-y-auto mono text-[13px] md:text-[14px] text-blue-300/90 space-y-5 scrollbar-hide bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] relative"
+        className="h-[500px] p-12 overflow-y-auto mono text-[14px] md:text-[16px] text-blue-200 space-y-6 scrollbar-hide bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] relative"
       >
         {history.map((entry, i) => (
           <div 
             key={i} 
-            className={`flex gap-4 group transition-all duration-300 ${entry.role === 'system' ? 'text-blue-500 font-bold bg-blue-500/5 p-4 border-l-2 border-blue-500/50' : ''} ${entry.role === 'user' ? 'text-white' : ''}`}
+            className={`flex gap-6 group transition-all duration-300 ${entry.role === 'system' ? 'text-blue-400 font-black bg-blue-500/10 p-5 border-l-4 border-blue-500 shadow-[0_0_20px_rgba(37,99,235,0.1)]' : ''} ${entry.role === 'user' ? 'text-white' : ''}`}
           >
-            <span className={`opacity-40 font-black min-w-[50px] ${entry.role === 'user' ? 'text-blue-400 opacity-80' : ''}`}>
+            <span className={`font-black min-w-[60px] select-none ${entry.role === 'user' ? 'text-blue-500 opacity-100 drop-shadow-[0_0_5px_rgba(37,99,235,0.8)]' : 'text-blue-800'}`}>
               {entry.role === 'user' ? 'USR>' : entry.role === 'system' ? 'SYS#' : 'VOID//'}
             </span>
-            <span className="leading-relaxed drop-shadow-[0_0_2px_rgba(37,99,235,0.3)]">
+            <span className={`leading-relaxed ${entry.role === 'ai' ? 'drop-shadow-[0_0_5px_rgba(191,219,254,0.4)]' : ''}`}>
               {entry.text}
             </span>
           </div>
         ))}
         {isTyping && (
-          <div className="flex items-center gap-3">
-            <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" />
-            <div className="animate-pulse text-blue-600 font-black tracking-[0.3em] text-[10px] uppercase">
-              ATTESA_RISPOSTA_DAL_VUOTO...
+          <div className="flex items-center gap-4 py-2">
+            <div className="flex gap-1">
+              <div className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-bounce [animation-delay:-0.3s]" />
+              <div className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-bounce [animation-delay:-0.15s]" />
+              <div className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-bounce" />
+            </div>
+            <div className="text-blue-500 font-black tracking-[0.4em] text-[11px] uppercase animate-pulse">
+              DECODIFICA_SEGNALE...
             </div>
           </div>
         )}
       </div>
 
       {/* Input Field */}
-      <form onSubmit={handleQuery} className="p-6 bg-black border-t border-blue-900/40 flex items-center group relative overflow-hidden">
-        <div className="absolute inset-0 bg-blue-600/5 opacity-0 group-focus-within:opacity-100 transition-opacity pointer-events-none" />
+      <form onSubmit={handleQuery} className="p-8 bg-[#020305] border-t border-blue-900/60 flex items-center group relative overflow-hidden">
+        <div className="absolute inset-0 bg-blue-500/5 opacity-0 group-focus-within:opacity-100 transition-opacity pointer-events-none" />
         
         <div className="relative flex items-center w-full z-10">
-          <span className="mono text-lg text-blue-500 mr-6 font-black animate-pulse">{'>'}</span>
+          <span className="mono text-2xl text-blue-500 mr-8 font-black animate-pulse drop-shadow-[0_0_10px_rgba(37,99,235,0.8)]">{'>'}</span>
           <input 
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="SCRIVI UN MESSAGGIO O UN COMANDO..."
-            className="w-full bg-transparent border-none outline-none mono text-[13px] md:text-[14px] text-white uppercase placeholder:text-blue-900/30 tracking-[0.2em] font-medium"
+            placeholder="DIGITA COMANDO O INTERROGA IL VUOTO..."
+            className="w-full bg-transparent border-none outline-none mono text-[15px] md:text-[17px] text-white uppercase placeholder:text-blue-900/40 tracking-[0.25em] font-bold"
             autoFocus
           />
-          <div className="w-3 h-6 bg-blue-500 shadow-[0_0_10px_rgba(37,99,235,0.8)] animate-[blink_0.8s_infinite] ml-4" />
+          <div className="w-3.5 h-7 bg-blue-500 shadow-[0_0_15px_rgba(37,99,235,1)] animate-[blink_0.8s_infinite] ml-6" />
         </div>
       </form>
 
