@@ -15,6 +15,10 @@
       --bg-dark: #05070a;
     }
 
+    * {
+      cursor: none !important;
+    }
+
     body {
       background-color: var(--bg-dark);
       color: #cbd5e1;
@@ -87,15 +91,27 @@
       100% { clip-path: inset(30% 0 40% 0); transform: translate(2px, -2px); }
     }
 
+    @keyframes crt-flicker {
+      0% { opacity: 0.97; }
+      5% { opacity: 0.95; }
+      10% { opacity: 0.9; }
+      15% { opacity: 0.98; }
+      20% { opacity: 0.92; }
+      25% { opacity: 0.99; }
+      30% { opacity: 0.9; }
+      100% { opacity: 1; }
+    }
+
     .scanlines::before {
       content: " ";
       display: block;
       position: absolute;
       top: 0; left: 0; bottom: 0; right: 0;
-      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%);
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(37, 99, 235, 0.05) 50%);
       z-index: 2;
-      background-size: 100% 4px;
+      background-size: 100% 6px;
       pointer-events: none;
+      animation: crt-flicker 0.15s infinite;
     }
   </style>
 <script type="importmap">

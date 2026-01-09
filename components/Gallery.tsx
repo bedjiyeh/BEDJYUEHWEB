@@ -1,9 +1,8 @@
 import React from 'react';
-import { GALLERY_IMAGES } from '../constants';
+import { GALLERY_IMAGES, YOUTUBE_VIDEO_ID } from '../constants';
 
 const Gallery: React.FC = () => {
-  const videoId = "mgwMs4ydUQA";
-  const embedUrl = `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1&controls=1&showinfo=0`;
+  const embedUrl = `https://www.youtube.com/embed/${YOUTUBE_VIDEO_ID}?rel=0&modestbranding=1&controls=1&showinfo=0`;
 
   return (
     <section id="visuals" className="py-24 bg-[#05070a] border-y border-white/5">
@@ -20,17 +19,14 @@ const Gallery: React.FC = () => {
           </div>
 
           <div className="relative aspect-video w-full bg-black border border-white/10 shadow-2xl shadow-blue-900/5 group">
-            {/* Direct Embed for maximum compatibility */}
             <iframe 
               className="absolute inset-0 w-full h-full z-10"
               src={embedUrl}
-              title="Bedjyueh - Chemical Void" 
+              title="Bedjyueh - Video" 
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
               allowFullScreen
               style={{ border: 0 }}
             ></iframe>
-            
-            {/* Visual Glitch Frame (Behind iframe) */}
             <div className="absolute -inset-1 bg-blue-500/10 blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
           </div>
         </div>
@@ -43,21 +39,26 @@ const Gallery: React.FC = () => {
           </div>
           
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-             {GALLERY_IMAGES.slice(0, 4).map((url, index) => (
+             {GALLERY_IMAGES.map((url, index) => (
                <div 
                 key={index} 
-                className="aspect-square bg-slate-900 overflow-hidden border border-white/5 group relative"
+                className="aspect-square bg-[#0a0d14] overflow-hidden border border-white/10 group relative"
                >
                  <img 
                   src={url} 
-                  className="w-full h-full object-cover grayscale brightness-50 contrast-125 
-                    transition-all duration-1000 ease-out
-                    group-hover:grayscale-0 group-hover:brightness-100 group-hover:contrast-100 group-hover:scale-110" 
+                  className="w-full h-full object-cover grayscale brightness-90 contrast-110 
+                    transition-all duration-700 ease-out
+                    group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-110" 
                   alt={`visual detail ${index}`} 
+                  loading="lazy"
+                  onError={(e) => {
+                    // Se l'immagine fallisce, mostra un segnaposto scuro invece di un'icona rotta
+                    (e.target as HTMLImageElement).src = "https://via.placeholder.com/600/05070a/2563eb?text=LOADING_ERROR";
+                  }}
                  />
                  
                  <div className="absolute inset-0 bg-blue-600/0 group-hover:bg-blue-600/10 transition-colors pointer-events-none" />
-                 <div className="absolute bottom-3 left-3 mono text-[8px] text-blue-500 opacity-0 group-hover:opacity-100 transition-opacity tracking-widest">
+                 <div className="absolute bottom-3 left-3 mono text-[8px] text-blue-500 opacity-0 group-hover:opacity-100 transition-opacity tracking-widest bg-black/60 px-1">
                    IMG_REF_0{index + 1}
                  </div>
                  

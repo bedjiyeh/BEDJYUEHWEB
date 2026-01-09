@@ -16,3 +16,11 @@ export interface ManifestItem {
   category: string;
   details: string[];
 }
+
+export interface Ritual {
+  date: string;
+  location: string;
+  venue: string;
+  coords: string;
+  status: 'AVAILABLE' | 'SOLD_OUT';
+}

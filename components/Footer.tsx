@@ -1,11 +1,11 @@
 import React from 'react';
-import { CONTACT_EMAIL } from '../constants';
+import { CONTACT_EMAIL, YOUTUBE_CHANNEL_URL } from '../constants';
 
 const Footer: React.FC = () => {
   const socialLinks = [
     { label: 'INSTAGRAM', href: 'https://www.instagram.com/bedjiyeh/' },
     { label: 'SPOTIFY', href: 'https://open.spotify.com/intl-it/album/7novTY7aSCMCE149bBDaV8?si=DczS9r8ASViwM8F9dzy4qA' },
-    { label: 'YOUTUBE', href: 'https://www.youtube.com/playlist?list=OLAK5uy_lbRD9F7PPLPnBFl1Nkpml9HP25GmsK09g' },
+    { label: 'YOUTUBE', href: YOUTUBE_CHANNEL_URL },
   ];
 
   return (
