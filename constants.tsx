@@ -18,16 +18,16 @@ export const RELEASES: Release[] = [
     type: "Album",
     year: "2025",
     // Immagine segnaposto per l'album - Sostituisci con /chemical_void.jpg quando caricata
-    coverUrl: "https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?q=80&w=1000&auto=format&fit=crop", 
+    coverUrl:"/images/chemical_void.jpg", 
     link: "https://open.spotify.com/intl-it/album/7novTY7aSCMCE149bBDaV8?si=DczS9r8ASViwM8F9dzy4qA"
   }
 ];
 
 export const GALLERY_IMAGES = [
-  "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=1000&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1000&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1514306191717-452ec28c7814?q=80&w=1000&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?q=80&w=1000&auto=format&fit=crop"
+  "/images/gallery1.jpg",
+  "/images/gallery2.png",
+  "/images/gallery3.png",
+  "/images/gallery4.png"
 ];
 
 export const MANIFESTO_DATA: ManifestItem[] = [
