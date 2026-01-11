@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { GoogleGenAI } from "@google/genai";
 
 const Terminal: React.FC = () => {
   const [input, setInput] = useState('');
@@ -18,7 +17,7 @@ const Terminal: React.FC = () => {
     }
   }, [history]);
 
-  const handleQuery = async (e: React.FormEvent) => {
+  const handleQuery = (e: React.FormEvent) => {
     e.preventDefault();
     const cmd = input.trim().toLowerCase();
     if (!cmd || isTyping) return;
@@ -26,57 +25,43 @@ const Terminal: React.FC = () => {
     setInput('');
     setHistory(prev => [...prev, {role: 'user', text: cmd.toUpperCase()}]);
 
-    if (cmd === '/help') {
-      setHistory(prev => [...prev, {role: 'system', text: 'COMMANDS: /VOID, /LYRICS, /GLITCH, /CLEAR, /HELP.'}]);
-      return;
-    }
-
-    if (cmd === '/clear') {
-      setHistory([{role: 'ai', text: 'SESSION_RESTARTED. CACHE_PURGED.'}]);
-      return;
-    }
-
-    if (cmd === '/void') {
-      setHistory(prev => [...prev, {role: 'ai', text: 'IL VUOTO NON È SILENZIO. È RUMORE BIANCO CHE DIVORA L\'IDENTITÀ.'}]);
-      return;
-    }
-
-    if (cmd === '/lyrics') {
-      const fragments = [
-        "\"La mia pelle è una mappa di luoghi che non ho mai visitato...\"",
-        "\"Synthetic heartbeat, chemical rain, I am the echo of your pain.\"",
-        "\"Trattieni lo statico finché non urla il tuo nome.\"",
-        "\"Siamo solo pixel dispersi in una città che non dorme mai.\""
-      ];
-      const randomLyric = fragments[Math.floor(Math.random() * fragments.length)];
-      setHistory(prev => [...prev, {role: 'ai', text: `FRAGMENT_DECODED: ${randomLyric}`}]);
-      return;
-    }
-
-    if (cmd === '/glitch') {
-      setGlitchActive(true);
-      setHistory(prev => [...prev, {role: 'system', text: 'ERROR_001: SYSTEM_STABILITY_COMPROMISED...'}]);
-      setTimeout(() => setGlitchActive(false), 2000);
-      return;
-    }
-
     setIsTyping(true);
-    try {
-      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
-      const response = await ai.models.generateContent({
-        model: 'gemini-3-flash-preview',
-        contents: cmd,
-        config: {
-          systemInstruction: "Sei l'eco digitale dei Bedjyueh. Parla come una macchina malfunzionante ma poetica. Temi: isolamento urbano, perdita di identità, estetica rock/industriale. Risposte brevi (max 20 parole), toni freddi e criptici. Non usare mai emoji.",
-        },
-      });
 
-      setHistory(prev => [...prev, {role: 'ai', text: response.text || 'SIGNAL_LOST'}]);
-    } catch (err) {
-      setHistory(prev => [...prev, {role: 'ai', text: 'CONNECTION_REFUSED_BY_VOID'}]);
-    } finally {
+    // Simula un tempo di elaborazione della macchina
+    setTimeout(() => {
+      if (cmd === '/help') {
+        setHistory(prev => [...prev, {role: 'system', text: 'COMMANDS: /VOID, /LYRICS, /GLITCH, /CLEAR, /HELP.'}]);
+      } else if (cmd === '/clear') {
+        setHistory([{role: 'ai', text: 'SESSION_RESTARTED. CACHE_PURGED.'}]);
+      } else if (cmd === '/void') {
+        setHistory(prev => [...prev, {role: 'ai', text: 'IL VUOTO NON È SILENZIO. È RUMORE BIANCO CHE DIVORA L\'IDENTITÀ.'}]);
+      } else if (cmd === '/lyrics') {
+        const fragments = [
+          "\"La mia pelle è una mappa di luoghi che non ho mai visitato...\"",
+          "\"Synthetic heartbeat, chemical rain, I am the echo of your pain.\"",
+          "\"Trattieni lo statico finché non urla il tuo nome.\"",
+          "\"Siamo solo pixel dispersi in una città che non dorme mai.\""
+        ];
+        const randomLyric = fragments[Math.floor(Math.random() * fragments.length)];
+        setHistory(prev => [...prev, {role: 'ai', text: `FRAGMENT_DECODED: ${randomLyric}`}]);
+      } else if (cmd === '/glitch') {
+        setGlitchActive(true);
+        setHistory(prev => [...prev, {role: 'system', text: 'ERROR_001: SYSTEM_STABILITY_COMPROMISED...'}]);
+        setTimeout(() => setGlitchActive(false), 2000);
+      } else {
+        // Risposte criptiche per comandi ignoti (Static responses instead of AI)
+        const randomResponses = [
+          "ERROR: SIGNAL_DEGRADED. RE-ENCRYPTING...",
+          "NO_CARRIER_FOUND. ATTENTION: DATA_VOID_DETECTED.",
+          "UNAUTHORIZED_ACCESS_ATTEMPT. LOGGING_IP...",
+          "FRAGMENT_00_LOCKED. REQUIRES_MANUAL_BYPASS.",
+          "STATIC_INTERFERENCE_DETECTED. RE-SUBMIT_QUERY."
+        ];
+        const randomMsg = randomResponses[Math.floor(Math.random() * randomResponses.length)];
+        setHistory(prev => [...prev, {role: 'ai', text: randomMsg}]);
+      }
       setIsTyping(false);
-    }
+    }, 600);
   };
 
   return (

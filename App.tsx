@@ -9,6 +9,7 @@ import Footer from './components/Footer';
 import AudioEngine from './components/AudioEngine';
 import CustomCursor from './components/CustomCursor';
 import Terminal from './components/Terminal';
+import Rituals from './components/Rituals';
 
 const App: React.FC = () => {
   useEffect(() => {
@@ -42,6 +43,11 @@ const App: React.FC = () => {
         
         <div className="reveal opacity-0 translate-y-10 transition-all duration-1000 ease-out">
           <Manifesto />
+        </div>
+
+        {/* Rituals Section - Live Dates */}
+        <div className="reveal opacity-0 translate-y-10 transition-all duration-1000 ease-out delay-75">
+          <Rituals />
         </div>
 
         {/* Enhanced Terminal Section */}

@@ -18,9 +18,56 @@ const AudioEngine: React.FC = () => {
     mainGain.connect(ctx.destination);
     mainGainRef.current = mainGain;
 
-    // --- 56K MODEM HANDSHAKE SIMULATION ---
+    // --- VOID ENGINE SYNTHESIS ---
 
-    // 1. CARRIER HISS (Filtered Noise)
+    // 1. SUB DRONE (The Industrial Hum)
+    const drone = ctx.createOscillator();
+    drone.type = 'sawtooth';
+    drone.frequency.setValueAtTime(43.65, ctx.currentTime); // F1 Note
+    
+    const droneFilter = ctx.createBiquadFilter();
+    droneFilter.type = 'lowpass';
+    droneFilter.frequency.setValueAtTime(120, ctx.currentTime);
+    droneFilter.Q.setValueAtTime(5, ctx.currentTime);
+    
+    const droneGain = ctx.createGain();
+    droneGain.gain.setValueAtTime(0.15, ctx.currentTime);
+
+    drone.connect(droneFilter);
+    droneFilter.connect(droneGain);
+    droneGain.connect(mainGain);
+    drone.start();
+
+    // 2. RHYTHMIC DATA PULSE (Synthetic Heartbeat)
+    const createPulse = () => {
+      if (!isActive && mainGainRef.current?.gain.value === 0) return;
+      
+      const osc = ctx.createOscillator();
+      const pGain = ctx.createGain();
+      const filter = ctx.createBiquadFilter();
+
+      osc.type = 'square';
+      osc.frequency.setValueAtTime(60 + Math.random() * 20, ctx.currentTime);
+      
+      filter.type = 'bandpass';
+      filter.frequency.setValueAtTime(400, ctx.currentTime);
+      
+      pGain.gain.setValueAtTime(0, ctx.currentTime);
+      pGain.gain.linearRampToValueAtTime(0.04, ctx.currentTime + 0.01);
+      pGain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.2);
+
+      osc.connect(filter);
+      filter.connect(pGain);
+      pGain.connect(mainGain);
+
+      osc.start();
+      osc.stop(ctx.currentTime + 0.2);
+    };
+
+    const pulseInterval = window.setInterval(createPulse, 500); // Steady 120BPM pulse
+    intervalsRef.current.push(pulseInterval);
+
+    // 3. ATMOSPHERIC GHOST (Filtered Noise Sweeps)
     const bufferSize = 2 * ctx.sampleRate;
     const noiseBuffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
     const output = noiseBuffer.getChannelData(0);
@@ -33,78 +80,51 @@ const AudioEngine: React.FC = () => {
 
     const noiseFilter = ctx.createBiquadFilter();
     noiseFilter.type = 'bandpass';
-    noiseFilter.frequency.setValueAtTime(1500, ctx.currentTime);
-    noiseFilter.Q.setValueAtTime(1, ctx.currentTime);
+    noiseFilter.frequency.setValueAtTime(1000, ctx.currentTime);
+    noiseFilter.Q.setValueAtTime(2, ctx.currentTime);
 
     const noiseGain = ctx.createGain();
-    noiseGain.gain.setValueAtTime(0.08, ctx.currentTime);
+    noiseGain.gain.setValueAtTime(0.03, ctx.currentTime);
 
+    // LFO for noise filter sweep
+    const sweepLfo = ctx.createOscillator();
+    sweepLfo.frequency.setValueAtTime(0.1, ctx.currentTime);
+    const sweepLfoGain = ctx.createGain();
+    sweepLfoGain.gain.setValueAtTime(800, ctx.currentTime);
+    
+    sweepLfo.connect(sweepLfoGain);
+    sweepLfoGain.connect(noiseFilter.frequency);
+    
     noise.connect(noiseFilter);
     noiseFilter.connect(noiseGain);
     noiseGain.connect(mainGain);
     noise.start();
+    sweepLfo.start();
 
-    // 2. THE DIGITAL GROWL (Low Sawtooth with Filter LFO)
-    const growl = ctx.createOscillator();
-    growl.type = 'sawtooth';
-    growl.frequency.setValueAtTime(110, ctx.currentTime);
-    
-    const growlFilter = ctx.createBiquadFilter();
-    growlFilter.type = 'lowpass';
-    growlFilter.frequency.setValueAtTime(400, ctx.currentTime);
-    growlFilter.Q.setValueAtTime(15, ctx.currentTime);
-    
-    const growlGain = ctx.createGain();
-    growlGain.gain.setValueAtTime(0.02, ctx.currentTime);
-
-    // LFO for the growl filter
-    const growlLfo = ctx.createOscillator();
-    growlLfo.frequency.setValueAtTime(8, ctx.currentTime);
-    const growlLfoGain = ctx.createGain();
-    growlLfoGain.gain.setValueAtTime(300, ctx.currentTime);
-    growlLfo.connect(growlLfoGain);
-    growlLfoGain.connect(growlFilter.frequency);
-    
-    growl.connect(growlFilter);
-    growlFilter.connect(growlGain);
-    growlGain.connect(mainGain);
-    growl.start();
-    growlLfo.start();
-
-    // 3. HIGH PITCHED "SHRIEKS" (Randomized FM Chirps)
-    const createChirp = () => {
+    // 4. HIGH GLITCH BURSTS (Occasional digital artifacts)
+    const createGlitch = () => {
       if (!isActive && mainGainRef.current?.gain.value === 0) return;
-      
+      if (Math.random() > 0.3) return; // Only trigger sometimes
+
       const osc = ctx.createOscillator();
-      const mod = ctx.createOscillator();
-      const mGain = ctx.createGain();
-      const cGain = ctx.createGain();
+      const gGain = ctx.createGain();
 
-      const freq = 1200 + Math.random() * 3000;
       osc.type = 'sine';
-      osc.frequency.setValueAtTime(freq, ctx.currentTime);
+      osc.frequency.setValueAtTime(2000 + Math.random() * 3000, ctx.currentTime);
       
-      mod.type = 'square';
-      mod.frequency.setValueAtTime(15 + Math.random() * 50, ctx.currentTime);
-      mGain.gain.setValueAtTime(Math.random() * 500, ctx.currentTime);
-      
-      cGain.gain.setValueAtTime(0, ctx.currentTime);
-      cGain.gain.linearRampToValueAtTime(0.015, ctx.currentTime + 0.1);
-      cGain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.5);
+      gGain.gain.setValueAtTime(0, ctx.currentTime);
+      gGain.gain.linearRampToValueAtTime(0.01, ctx.currentTime + 0.005);
+      gGain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.05);
 
-      mod.connect(mGain);
-      mGain.connect(osc.frequency);
-      osc.connect(cGain);
-      cGain.connect(mainGain);
+      osc.connect(gGain);
+      gGain.connect(mainGain);
 
       osc.start();
-      mod.start();
-      osc.stop(ctx.currentTime + 0.5);
-      mod.stop(ctx.currentTime + 0.5);
+      osc.stop(ctx.currentTime + 0.05);
     };
 
-    const chirpInterval = window.setInterval(createChirp, 800);
-    intervalsRef.current.push(chirpInterval);
+    const glitchInterval = window.setInterval(createGlitch, 150);
+    intervalsRef.current.push(glitchInterval);
   };
 
   const toggleAudio = () => {
@@ -118,9 +138,9 @@ const AudioEngine: React.FC = () => {
     }
 
     if (isActive) {
-      mainGainRef.current?.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 1);
+      mainGainRef.current?.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 1.5);
     } else {
-      mainGainRef.current?.gain.exponentialRampToValueAtTime(0.3, ctx.currentTime + 1.5);
+      mainGainRef.current?.gain.exponentialRampToValueAtTime(0.4, ctx.currentTime + 2);
     }
     setIsActive(!isActive);
   };
@@ -135,28 +155,28 @@ const AudioEngine: React.FC = () => {
     <div className="fixed bottom-10 right-10 z-50 flex flex-col items-end gap-2">
       <button 
         onClick={toggleAudio}
-        className="mono group flex items-center gap-3 bg-black/40 border border-blue-900/30 px-4 py-2 hover:bg-blue-900/20 transition-all backdrop-blur-sm"
-        aria-label="Toggle Modem Handshake Sound"
+        className="mono group flex items-center gap-3 bg-black/40 border border-blue-900/30 px-5 py-3 hover:bg-blue-900/20 transition-all backdrop-blur-sm shadow-[0_0_20px_rgba(37,99,235,0.05)] hover:shadow-[0_0_30px_rgba(37,99,235,0.1)]"
+        aria-label="Toggle Electronic Engine Sound"
       >
-        <div className="flex gap-0.5 items-end h-3 w-4">
-          {[1,2,3,4].map(i => (
+        <div className="flex gap-1 items-end h-4 w-6">
+          {[1,2,3,4,5].map(i => (
             <div 
               key={i} 
-              className={`w-0.5 bg-blue-400 transition-all duration-300 ${isActive ? 'animate-pulse' : 'h-0.5 opacity-30'}`}
+              className={`w-0.5 bg-blue-500 transition-all duration-300 ${isActive ? 'animate-pulse' : 'h-1 opacity-20'}`}
               style={{ 
-                height: isActive ? `${20 + Math.random() * 80}%` : '2px',
-                animationDelay: `${i * 0.05}s`,
-                animationDuration: '0.1s' 
+                height: isActive ? `${30 + Math.random() * 70}%` : '2px',
+                animationDelay: `${i * 0.1}s`,
+                animationDuration: '0.15s' 
               }}
             />
           ))}
         </div>
-        <span className="text-[9px] font-bold tracking-[0.3em] text-blue-500 uppercase">
-          {isActive ? 'MODEM_HANDSHAKE_LIVE' : 'MODEM_OFFLINE'}
+        <span className="text-[10px] font-black tracking-[0.4em] text-blue-400 uppercase">
+          {isActive ? 'VOID_ENGINE_LIVE' : 'ENGINE_STANDBY'}
         </span>
       </button>
-      <div className="mono text-[8px] text-blue-900/40 tracking-widest uppercase text-right">
-        {isActive ? 'B-LINK_ESTABLISHED' : 'CARRIER_LOST'}
+      <div className="mono text-[8px] text-blue-900/50 tracking-[0.5em] uppercase text-right font-bold">
+        {isActive ? 'SIGNAL_STABLE // NEURAL_DRONE' : 'CARRIER_LOST'}
       </div>
     </div>
   );
