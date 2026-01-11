@@ -9,7 +9,6 @@ import Footer from './components/Footer';
 import AudioEngine from './components/AudioEngine';
 import CustomCursor from './components/CustomCursor';
 import Terminal from './components/Terminal';
-import Rituals from './components/Rituals';
 
 const App: React.FC = () => {
   useEffect(() => {
@@ -45,14 +44,8 @@ const App: React.FC = () => {
           <Manifesto />
         </div>
 
-        {/* Rituals Section - Live Dates */}
-        <div className="reveal opacity-0 translate-y-10 transition-all duration-1000 ease-out delay-75">
-          <Rituals />
-        </div>
-
         {/* Enhanced Terminal Section */}
         <section id="terminal" className="py-32 bg-black border-y border-blue-900/20 relative overflow-hidden reveal opacity-0 translate-y-10 transition-all duration-1000 ease-out delay-100">
-          {/* Ambient Glow */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[600px] bg-blue-600/5 blur-[160px] pointer-events-none rounded-full" />
           
           <div className="max-w-7xl mx-auto px-6 relative z-10">
@@ -74,7 +67,7 @@ const App: React.FC = () => {
                   <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
                   <span>CONNECTION: STABLE</span>
                 </div>
-                <div className="opacity-50">
+                <div className="opacity-50 text-[10px]">
                   REF: 00-VOID-2025-V.1.0.5<br />
                   ENCRYPTION: 256-STATIC-BIT
                 </div>
@@ -82,7 +75,6 @@ const App: React.FC = () => {
             </div>
             
             <div className="max-w-5xl mx-auto relative group">
-              {/* Hardware Frame Accents */}
               <div className="absolute -top-4 -left-4 w-12 h-12 border-t-2 border-l-2 border-blue-500 opacity-40 group-hover:opacity-100 transition-opacity" />
               <div className="absolute -top-4 -right-4 w-12 h-12 border-t-2 border-r-2 border-blue-500 opacity-40 group-hover:opacity-100 transition-opacity" />
               <div className="absolute -bottom-4 -left-4 w-12 h-12 border-b-2 border-l-2 border-blue-500 opacity-40 group-hover:opacity-100 transition-opacity" />
@@ -99,7 +91,6 @@ const App: React.FC = () => {
         </section>
         
         <div className="reveal opacity-0 translate-y-10 transition-all duration-1000 ease-out delay-200">
-          <div className="h-px w-full bg-gradient-to-r from-transparent via-blue-900/20 to-transparent" />
           <Discography />
         </div>
 

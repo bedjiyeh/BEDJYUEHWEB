@@ -17,10 +17,11 @@ export interface ManifestItem {
   details: string[];
 }
 
+// Interface for live events/rituals
 export interface Ritual {
   date: string;
   location: string;
   venue: string;
   coords: string;
-  status: 'AVAILABLE' | 'SOLD_OUT';
+  status: 'SOLD_OUT' | 'AVAILABLE';
 }
